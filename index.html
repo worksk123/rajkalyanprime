@@ -15,7 +15,7 @@
     whatsappNumber: "919288489344",   // country code ke sath, bina + ke (example: 919876543210)
     callNumber: "+919288489344",      // example: +919876543210
     waMessage: "Hello Admin, I want to download your app",
-    minSeconds: 2                     // isse pehle click hua to Lead count nahi hoga
+    minSeconds: 2                     // isse pehle click hua to Subscribe count nahi hoga
   };
 </script>
 
@@ -132,7 +132,7 @@ fbq('track', 'PageView');
 (function(){
   var loadedAt = Date.now();
   var interacted = false;      // real touch / scroll / mouse hua ya nahi
-  var KEY = 'kp_lead_sent';
+  var KEY = 'kp_Subscribe_sent';
 
   ['touchstart','scroll','mousemove','keydown'].forEach(function(ev){
     window.addEventListener(ev, function(){ interacted = true; }, {passive:true, once:true});
@@ -145,10 +145,10 @@ fbq('track', 'PageView');
   var dl = document.getElementById('btnDownload');
   dl.href = CONFIG.apkFile; dl.setAttribute('download', CONFIG.apkFile);
 
-  // Fake click protection: Lead tabhi count hoga jab
+  // Fake click protection: Subscribe tabhi count hoga jab
   // 1) click asli user ne kiya (isTrusted)  2) page par kam se kam minSeconds ruka
-  // 3) page visible hai  4) user ne page se interact kiya  5) is session me pehle Lead nahi gaya
-  function fireLead(e){
+  // 3) page visible hai  4) user ne page se interact kiya  5) is session me pehle Subscribe nahi gaya
+  function fireSubscribe(e){
     try{
       if(!e || !e.isTrusted) return;
       if(document.hidden) return;
@@ -156,14 +156,14 @@ fbq('track', 'PageView');
       if(!interacted && e.detail === 0) return;
       if(sessionStorage.getItem(KEY)) return;
       if(typeof fbq === 'function'){
-        fbq('track','Lead');
+        fbq('track','Subscribe');
         sessionStorage.setItem(KEY,'1');
       }
     }catch(err){}
   }
 
   ['btnDownload','btnWhatsapp','btnCall'].forEach(function(id){
-    document.getElementById(id).addEventListener('click', fireLead);
+    document.getElementById(id).addEventListener('click', fireSubscribe);
   });
 })();
 </script>
